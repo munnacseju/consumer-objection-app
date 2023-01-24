@@ -28,27 +28,82 @@ public class Objection {
 
     @Column(columnDefinition = "TEXT")
     private String audioBase64;
+    
+    private String objectionDetails;
+    private String objectionType;
+    private String accusedOrganizationName;
+    private String accusedOrganizationAddress;
 
-    private Double price;
+	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp time = new Timestamp(System.currentTimeMillis());
 
-    @ManyToOne(optional = false)
+	@ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp time = new Timestamp(System.currentTimeMillis());;
-
+    private Boolean isVerified;
+    private Boolean isClosed;
+	
     public Objection() {
 
     }
 
-    public Objection(String imageBase64, String videoBase64, String audioBase64, Double price, User user) {
-        this.imageBase64 = imageBase64;
-        this.videoBase64 = videoBase64;
-        this.audioBase64 = audioBase64;
-        this.price = price;
-        this.user = user;
-    }
+    public Objection(Long id, String imageBase64, String videoBase64, String audioBase64, String objectionDetails,
+			String objectionType, String accusedOrganizationName, String accusedOrganizationAddress, Timestamp time,
+			User user) {
+		super();
+		this.id = id;
+		this.imageBase64 = imageBase64;
+		this.videoBase64 = videoBase64;
+		this.audioBase64 = audioBase64;
+		this.objectionDetails = objectionDetails;
+		this.objectionType = objectionType;
+		this.accusedOrganizationName = accusedOrganizationName;
+		this.accusedOrganizationAddress = accusedOrganizationAddress;
+		this.time = time;
+		this.user = user;
+	}
+
+    public String getObjectionDetails() {
+		return objectionDetails;
+	}
+
+
+	public void setObjectionDetails(String objectionDetails) {
+		this.objectionDetails = objectionDetails;
+	}
+
+
+	public String getObjectionType() {
+		return objectionType;
+	}
+
+
+	public void setObjectionType(String objectionType) {
+		this.objectionType = objectionType;
+	}
+
+
+	public String getAccusedOrganizationName() {
+		return accusedOrganizationName;
+	}
+
+
+	public void setAccusedOrganizationName(String accusedOrganizationName) {
+		this.accusedOrganizationName = accusedOrganizationName;
+	}
+
+
+	public String getAccusedOrganizationAddress() {
+		return accusedOrganizationAddress;
+	}
+
+
+	public void setAccusedOrganizationAddress(String accusedOrganizationAddress) {
+		this.accusedOrganizationAddress = accusedOrganizationAddress;
+	}
+
+
 
     public Long getId() {
         return id;
@@ -82,14 +137,6 @@ public class Objection {
         this.videoBase64 = videoBase64;
     }
 
-    public Double getPrice() {
-        return this.price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     public User getUser() {
         return this.user;
     }
@@ -105,4 +152,22 @@ public class Objection {
     public void setTime(Timestamp time) {
         this.time = time;
     }
+
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    public Boolean getIsClosed() {
+        return isClosed;
+    }
+
+    public void setIsClosed(Boolean isClosed) {
+        this.isClosed = isClosed;
+    }
+
+    
 }
