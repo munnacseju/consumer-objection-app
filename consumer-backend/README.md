@@ -1,4 +1,3 @@
-# consumer-objection-app
 -----------------Install Maven----------------
 $ sudo apt-get install maven
 
