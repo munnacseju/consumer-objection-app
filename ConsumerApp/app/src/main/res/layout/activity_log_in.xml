@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#009688"
+    tools:context=".LogInActivity">
+
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBarId"
+        ></ProgressBar>
+
+    <EditText
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:hint="@string/enter_mail"
+        android:gravity="center"
+        android:background="#FAF6F6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailEditTextid"
+        android:textSize="22dp"
+        android:textColor="#004D40"
+        android:textAlignment="center"
+        />
+
+    <EditText
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:hint="@string/enter_password"
+        android:background="#FAF6F6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordEditTextid"
+        android:textSize="22dp"
+        android:textColor="#004D40"
+        android:inputType="textWebPassword"
+        />
+
+                <Button
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/log_in"
+                    android:id="@+id/loginButtonid"
+                    android:layout_gravity="center"
+                    android:background="#4CAF50"
+                    />
+
+                <Button
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_new_account"
+                    android:id="@+id/regirstrationActivityButtonid"
+                    android:layout_gravity="center"
+                    android:background="#4CAF50"
+                    />
+</LinearLayout>

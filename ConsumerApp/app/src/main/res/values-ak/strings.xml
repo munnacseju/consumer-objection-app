@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name"> DirecSell </string>
+    <string name="log_in">Log in</string>
+    <string name="registration">Registration</string>
+    <string name="select_language">Change Language</string>
+    <string name="already_have_account"> Already have an Account</string>
+    <string name="create_new_account"> Create a new Account</string>
+    <string name="capture">Capture</string>
+    <string name="price">Price</string>
+    <string name="submit">Submit</string>
+    <string name="start_record">Start Recording</string>
+    <string name="stop_record">Stop Recording</string>
+    <string name="enter_mail"> Enter Email </string>
+    <string name="enter_password"> Enter Password </string>
+    <string name="enter_name"> Enter Name </string>
+    <string name="enter_mobile_number"> Enter Username </string>
+    <string name="log_out">Log Out
+    </string>
+    <string name="want_to_exit">Are you sure you want to exit the app?
+ </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="create_objection"> Create a Objection </string>
+    <string name="see_objection"> See Objections </string>
+    <string name="help"> Help </string>
+    <string name="contact_us"> Contact Us </string>
+    <string name="share"> Share</string>
+    <string name="share_data"> ConsumerObjection App is so good, You can use it, App Link... </string>
+    <string name="help_data"> You can use this app easily. If you face any problem you can contact with us </string>
+</resources>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/logoutMenuId"
+        app:showAsAction="never"
+        android:title="@string/log_out"
+        ></item>
+    <item
+        android:id="@+id/changeLanguageMenuId"
+        app:showAsAction="never"
+        android:title="@string/select_language"
+        ></item>
+    <item
+        android:id="@+id/contactUsMenuId"
+        app:showAsAction="never"
+        android:title="@string/contact_us"></item>
+    <item
+        android:id="@+id/helpMenuId"
+        app:showAsAction="never"
+        android:title="@string/help"></item>
+    <item
+        android:id="@+id/shareMenuId"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/share"
+        ></item>
+
+</menu>

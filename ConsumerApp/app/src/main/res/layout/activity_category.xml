@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".CategoryActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_margin="1dp"
+        >
+        <Spinner
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:padding="1dp"
+            android:spinnerMode="dropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainCategoryId">
+        </Spinner>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        >
+        <Spinner
+            android:visibility="gone"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:padding="1dp"
+            android:spinnerMode="dropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/categorySpinnerId">
+        </Spinner>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        >
+        <Spinner
+            android:visibility="gone"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:padding="1dp"
+            android:spinnerMode="dropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/categorySpinnerId2">
+        </Spinner>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:id="@+id/submitBtn"></Button>
+
+
+</LinearLayout>
