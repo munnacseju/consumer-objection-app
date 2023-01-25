@@ -168,6 +168,4 @@ public class Objection {
     public void setIsClosed(Boolean isClosed) {
         this.isClosed = isClosed;
     }
-
-    
 }

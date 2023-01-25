@@ -156,7 +156,7 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         }else if(price.isEmpty()){
             etPrice.setError("Enter Price");
             etPrice.requestFocus();
-            Toast.makeText(getApplicationContext(), "Enter Product Price", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Enter Objection Details", Toast.LENGTH_SHORT).show();
             return false;
         }else {
             return true;

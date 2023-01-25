@@ -50,7 +50,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final Objection objection = listdata[position];
-        holder.textView.setText( "Price: " + listdata[position].getPrice());
+        holder.textView.setText( "Price: " + listdata[position].getObjectionDetails());
         String image, videoBase64;
         image = listdata[position].getImageBase64();
         videoBase64 = listdata[position].getVideoBase64();
@@ -73,7 +73,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
                 intent.putExtra("objectionId", objection.getId());
                 view.getContext().startActivity(intent);
 //                ((Activity)(view.getContext())).finish();
-                Toast.makeText(view.getContext(),"click on item: "+objection.getPrice(),Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"click on item: "+objection.getObjectionDetails(),Toast.LENGTH_LONG).show();
             }
         });
 //        MediaController mediaController = new MediaController(context);
