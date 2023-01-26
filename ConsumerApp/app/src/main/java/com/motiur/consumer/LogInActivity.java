@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.motiur.consumer.api.RetrofitClient;
+import com.motiur.consumer.api.ConsumerObjectionClient;
 import com.motiur.consumer.model.User;
 import com.motiur.consumer.security.AuthToken;
 
@@ -76,7 +76,7 @@ public class LogInActivity extends AppCompatActivity {
             return;
         }
         findViewById(R.id.progressBarId).setVisibility(View.VISIBLE);
-        Call<ResponseBody> call = RetrofitClient
+        Call<ResponseBody> call = ConsumerObjectionClient
                 .getInstance()
                 .getAPI()
                 .checkUser(new User(email, password));

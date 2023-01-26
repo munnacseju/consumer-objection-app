@@ -19,13 +19,13 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClient {
+public class ConsumerObjectionClient {
     private static final String BASE_URL = "http://192.168.31.220:8093/api/";
-    private static RetrofitClient mInstance;
+    private static ConsumerObjectionClient mInstance;
     private Retrofit retrofit;
 
 
-    private RetrofitClient () {
+    private ConsumerObjectionClient() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -33,15 +33,15 @@ public class RetrofitClient {
                 .build();
     }
 
-    public static synchronized RetrofitClient getInstance() {
+    public static synchronized ConsumerObjectionClient getInstance() {
         if (mInstance == null) {
-            mInstance = new RetrofitClient();
+            mInstance = new ConsumerObjectionClient();
         }
         return mInstance;
     }
 
-    public API getAPI () {
-        return retrofit.create(API.class);
+    public APIService getAPI () {
+        return retrofit.create(APIService.class);
     }
 
     private static OkHttpClient getUnsafeOkHttpClient() {

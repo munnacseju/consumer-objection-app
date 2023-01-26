@@ -35,10 +35,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.motiur.consumer.api.RetrofitClient;
+import com.motiur.consumer.api.ConsumerObjectionClient;
 import com.motiur.consumer.model.Objection;
 import com.motiur.consumer.util.EncodeDecodeUtil;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
@@ -48,8 +49,9 @@ import retrofit2.Response;
 
 public class CreateObjectionActivity extends AppCompatActivity implements View.OnClickListener {
 
-    static final int REQUEST_VIDEO_CAPTURE = 2;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_VIDEO_PICK = 2;
+    static final int REQUEST_IMAGE_PICK = 1;
+    static final int REQUET_AUDIO_PICK = 3;
     private Chronometer chronometer;
     private Button recorderBtn;
     private Button captureBtn;
@@ -58,7 +60,6 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
     private String recordPermission = Manifest.permission.RECORD_AUDIO;
     private int PERMISSION_CODE = 21;
     private MediaRecorder mediaRecorder;
-    private String recordFile;
     private String imageBase64 = "";
     private String audioBase64 = "";
     private String videoBase64 = "";
@@ -102,18 +103,7 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         recorderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isRecording){
-                    recorderBtn.setText(R.string.start_record);
-                    isRecording = false;
-                    stopRecording();
-                }
-                else {
-                    if(checkPermissions()){
-                        recorderBtn.setText(R.string.stop_record);
-                        isRecording = true;
-                        startRecording();
-                    }
-                }
+                selectAudioIntent();
             }
         });
 
@@ -121,7 +111,7 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
-                captureImageIntent();
+                selectImageIntent();
             }
         });
 
@@ -138,7 +128,7 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         findViewById(R.id.videoCaptureButtonId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takeVideoIntent();
+                selectVideoIntent();
             }
         });
     }
@@ -168,70 +158,67 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageBase64 = EncodeDecodeUtil.encodeImageToBase64(imageBitmap, this);
-            Bitmap decodedImage = EncodeDecodeUtil.decodeBase64ToImage(imageBase64, this);
-            imageView.setImageBitmap(decodedImage);
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
+            Uri imageUri = data.getData();
+            try {
+                Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                imageBase64 = EncodeDecodeUtil.encodeImageToBase64(imageBitmap, this);
+                Bitmap decodedImage = EncodeDecodeUtil.decodeBase64ToImage(imageBase64, this);
+                imageView.setImageBitmap(decodedImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        else if(requestCode==REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK){
+        else if(requestCode== REQUEST_VIDEO_PICK && resultCode == RESULT_OK){
             Uri videoUri = data.getData();
             videoBase64 = EncodeDecodeUtil.encodeVideoToBase64(videoUri, this);
-
             Uri uri = EncodeDecodeUtil.decodeBase64ToVideo(videoBase64, this);
             videoView.setVideoURI(uri);
             videoView.start();
+        }else{
+            Toast.makeText(this, "Someting issue", Toast.LENGTH_SHORT).show();
+        }if (requestCode == REQUET_AUDIO_PICK && resultCode == RESULT_OK && data != null) {
+            Uri audioUri = data.getData();
+            File recordFile = new File(String.valueOf(audioUri));
+            String path = recordFile.getAbsolutePath();
+            audioBase64 = EncodeDecodeUtil.encodeAudioToBase64(path, this);
+
+
         }
     }
 
-    private void captureImageIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.d("tag", "I am here");
+    private void selectImageIntent() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
         try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_IMAGE_PICK);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(CreateObjectionActivity.this, "photo taking failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CreateObjectionActivity.this, "photo loading failed", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void takeVideoIntent() {
-        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+    private void selectVideoIntent() {
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select video"), REQUEST_VIDEO_PICK);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(CreateObjectionActivity.this, "video loading failed", Toast.LENGTH_SHORT).show();
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-
-    private void startRecording() {
-        String recordPath = this.getExternalFilesDir("/").getAbsolutePath();
-        recordFile = recordPath +"/" + "Recording_" + "_myfilename.mp3";
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setOutputFile(recordFile);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+    private void selectAudioIntent() {
+        Intent intent = new Intent();
+        intent.setType("audio/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
 
         try {
-            Toast.makeText(getApplicationContext(), "Starting Successfully", Toast.LENGTH_SHORT).show();
-            mediaRecorder.prepare();
-        } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), "Find Exception " + e.toString(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+            startActivityForResult(Intent.createChooser(intent, "Select audio"), REQUEST_VIDEO_PICK);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(CreateObjectionActivity.this, "audio loading failed", Toast.LENGTH_SHORT).show();
         }
-        mediaRecorder.start();
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        chronometer.start();
-    }
-
-    private void stopRecording() {
-        mediaRecorder.stop();
-        mediaRecorder.release();
-
-        audioBase64 = EncodeDecodeUtil.encodeAudioToBase64(recordFile, this);
-        mediaRecorder = null;
-        chronometer.stop();
     }
 
     private boolean checkPermissions() {
@@ -289,7 +276,7 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
     private void objectionRequest() {
 
         progressBar.setVisibility(View.VISIBLE);
-        Call<ResponseBody> call = RetrofitClient
+        Call<ResponseBody> call = ConsumerObjectionClient
                 .getInstance()
                 .getAPI()
                 .sendObjection(new Objection(imageBase64, audioBase64, videoBase64, price));

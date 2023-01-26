@@ -13,7 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface API {
+public interface APIService {
 
     @POST("register")
     Call<RegisterResponse> createUser (

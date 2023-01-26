@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.motiur.consumer.Adapter.MyListAdapter;
-import com.motiur.consumer.api.RetrofitClient;
+import com.motiur.consumer.api.ConsumerObjectionClient;
 import com.motiur.consumer.model.GetAllObjectionResponse;
 import com.motiur.consumer.model.Objection;
 
@@ -54,7 +54,7 @@ public class AllObjectionsActivity extends AppCompatActivity {
 
     private void getObjections() {
         progressBar.setVisibility(View.VISIBLE);
-        Call<GetAllObjectionResponse> call = RetrofitClient
+        Call<GetAllObjectionResponse> call = ConsumerObjectionClient
                 .getInstance()
                 .getAPI()
                 .getObjections();

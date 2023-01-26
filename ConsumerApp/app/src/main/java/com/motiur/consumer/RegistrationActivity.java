@@ -14,12 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.motiur.consumer.api.RetrofitClient;
+import com.motiur.consumer.api.ConsumerObjectionClient;
 import com.motiur.consumer.model.RegisterResponse;
 import com.motiur.consumer.model.User;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Calendar;
 
 import retrofit2.Call;
@@ -113,7 +111,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Boolean isValid = checkValidation(mobileNumber, password, email, name, dateOfBirth, nationalId, fatherName, motherName, occupation, presentAddress, parmanentAddress);
         if(isValid){
             findViewById(R.id.progressBarId).setVisibility(View.VISIBLE);
-            Call<RegisterResponse> call = RetrofitClient
+            Call<RegisterResponse> call = ConsumerObjectionClient
                     .getInstance()
                     .getAPI()
                     .createUser(new User(name, email, mobileNumber, password, fatherName, motherName, dateOfBirthString, occupation, presentAddress, parmanentAddress, nationalId));

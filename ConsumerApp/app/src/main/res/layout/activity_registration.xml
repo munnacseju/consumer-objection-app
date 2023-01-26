@@ -12,7 +12,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:orientation="vertical"
             android:gravity="center"
             android:background="@color/white"
@@ -217,7 +216,7 @@
                 android:textAlignment="center"
                 />
 
-            
+
             <Button
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"

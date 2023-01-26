@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.motiur.consumer.api.RetrofitClient;
+import com.motiur.consumer.api.ConsumerObjectionClient;
 import com.motiur.consumer.util.EncodeDecodeUtil;
 
 import org.json.JSONException;
@@ -94,7 +94,7 @@ public class ObjectionActivity extends AppCompatActivity {
     private void requestForGetObjection(Long objectionId) {
         progressBar.setVisibility(View.VISIBLE);
         linearLayout.setVisibility(View.GONE);
-        Call<ResponseBody> call = RetrofitClient
+        Call<ResponseBody> call = ConsumerObjectionClient
                 .getInstance()
                 .getAPI()
                 .getObjection(objectionId);
@@ -148,7 +148,7 @@ public class ObjectionActivity extends AppCompatActivity {
 
     private void requestForDeleteaObjection(Long objectionId) {
         progressBar.setVisibility(View.VISIBLE);
-        Call<ResponseBody> call = RetrofitClient
+        Call<ResponseBody> call = ConsumerObjectionClient
                 .getInstance()
                 .getAPI()
                 .deleteObjection(objectionId);
