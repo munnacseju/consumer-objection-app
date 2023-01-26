@@ -26,7 +26,19 @@
     <string name="share"> সেয়ার করুন </string>
     <string name="share_data"> Consumer Objection এপটি খুব ভালো লেগেছে। এপস লিংক... </string>
     <string name="help_data"> খুব সহজেই আমাদের এপসি ব্যবহার করেত পারবেন। কোন প্রবলেম হলে আমাদের সাথে যোগাযোগ করুন। </string>
-
+    <string name="date_of_birth">Enter Date of birth</string>
+    <string name="id_number">Enter Date of birth</string>
+    <string name="fater_name">Father`s Name</string>
+    <string name="mother_name">Mother`s Name</string>
+    <string name="occupation">Occupation</string>
+    <string name="permanent_address">Parmanent Address</string>
+    <string name="present_address">Present Address</string>
+    <string name="complaint_type">Complaint Type</string>
+    <string name="accused_organization_name">Name of accused organization</string>
+    <string name="accused_organization_address">Address of accused organization</string>
+    <string name="district">District</string>
+    <string name="division">Division</string>
+    <string name="signature">signature</string>
 
 </resources>
 

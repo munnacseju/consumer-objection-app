@@ -1,7 +1,6 @@
 package com.motiur.consumer.model;
 
 
-import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -19,7 +18,7 @@ public class User {
 
     private String fatherName;
     private String matherName;
-    private Timestamp dateOfBirth;
+    private String dateOfBirth;
     private String occupation;
     private String presentAddress;
     private String permanentAddress;
@@ -46,9 +45,22 @@ public class User {
         this.mobileNumber = mobileNumber;
     }
 
+    public User(String name, String email, String mobileNumber, String password, String fatherName, String matherName, String dateOfBirth, String occupation, String presentAddress, String permanentAddress, String nidNumber) {
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.password = password;
+        this.fatherName = fatherName;
+        this.matherName = matherName;
+        this.dateOfBirth = dateOfBirth;
+        this.occupation = occupation;
+        this.presentAddress = presentAddress;
+        this.permanentAddress = permanentAddress;
+        this.nidNumber = nidNumber;
+    }
 
-    public User(Long id, String name,  String email,  String password,
-                List<Objection> objections, String fatherName, String matherName, Timestamp dateOfBirth, String occupation,
+    public User(Long id, String name, String email, String password,
+                List<Objection> objections, String fatherName, String matherName, String dateOfBirth, String occupation,
                 String presentAddress, String permanentAddress, String nidNumber, String mobileNumber) {
         super();
         this.id = id;
@@ -82,11 +94,11 @@ public class User {
         this.matherName = matherName;
     }
 
-    public Timestamp getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Timestamp dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

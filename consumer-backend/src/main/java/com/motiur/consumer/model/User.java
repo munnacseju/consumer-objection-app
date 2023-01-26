@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.GeneratedValue;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -51,7 +50,7 @@ public class User {
     
     private String fatherName;
     private String matherName;
-    private Timestamp dateOfBirth;
+    private String dateOfBirth;
     private String occupation;
     private String presentAddress;
     private String permanentAddress;
@@ -74,7 +73,7 @@ public class User {
 
     
     public User(Long id, @NotEmpty String name, @NotEmpty @Email String email, @NotEmpty @Size(min = 6) String password,
-			List<Objection> objections, String fatherName, String matherName, Timestamp dateOfBirth, String occupation,
+			List<Objection> objections, String fatherName, String matherName, String dateOfBirth, String occupation,
 			String presentAddress, String permanentAddress, String nidNumber, String mobileNumber) {
 		super();
 		this.id = id;
@@ -108,11 +107,11 @@ public class User {
 		this.matherName = matherName;
 	}
 
-	public Timestamp getDateOfBirth() {
+	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Timestamp dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

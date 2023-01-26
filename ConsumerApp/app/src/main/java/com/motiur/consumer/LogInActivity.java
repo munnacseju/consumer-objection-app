@@ -88,19 +88,24 @@ public class LogInActivity extends AppCompatActivity {
 //                String s = "ha ha hi hi";
 //                Log.d("hello", call.request().toString());
                 if (response.isSuccessful() && response.code() == 200) {
-                    Log.d("token", response.headers().get("Authorization"));
+                    if(response.headers().get("Authorization")!=null){
 
-                    String authToken = response.headers().get("Authorization");
-                    AuthToken.authToken = authToken;
-                    Toast.makeText(LogInActivity.this, "Successfully Logged in!", Toast.LENGTH_LONG).show();
+                        Log.d("token", response.headers().get("Authorization"));
+
+                        String authToken = response.headers().get("Authorization");
+                        AuthToken.authToken = authToken;
+                        Toast.makeText(LogInActivity.this, "Successfully Logged in!", Toast.LENGTH_LONG).show();
 
 
-                    SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("auth", authToken);
-                    editor.apply();
-                    finish();
-                    startActivity(new Intent(LogInActivity.this, ProtectedActivity.class));
+                        SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("auth", authToken);
+                        editor.apply();
+                        finish();
+                        startActivity(new Intent(LogInActivity.this, ProtectedActivity.class));
+                    }else{
+                        Toast.makeText(LogInActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(LogInActivity.this, "Wrong Credentials! Try again!", Toast.LENGTH_LONG).show();
 //                    Toast.makeText(Registration.this, "Some unknown problem occurred!", Toast.LENGTH_LONG).show();
