@@ -19,6 +19,9 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.motiur.consumer.api.ConsumerObjectionClient;
+import com.motiur.consumer.constants.ConsumerConstant;
+import com.motiur.consumer.model.GetObjectionResponse;
+import com.motiur.consumer.model.Objection;
 import com.motiur.consumer.util.EncodeDecodeUtil;
 
 import org.json.JSONException;
@@ -94,40 +97,38 @@ public class ObjectionActivity extends AppCompatActivity {
     private void requestForGetObjection(Long objectionId) {
         progressBar.setVisibility(View.VISIBLE);
         linearLayout.setVisibility(View.GONE);
-        Call<ResponseBody> call = ConsumerObjectionClient
+        Call<GetObjectionResponse> call = ConsumerObjectionClient
                 .getInstance()
                 .getAPI()
                 .getObjection(objectionId);
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<GetObjectionResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<GetObjectionResponse> call, Response<GetObjectionResponse> response) {
                 if (response.isSuccessful() && response.code() == 200) {
-                    Toast.makeText(getApplicationContext(), "Successfully got data! "+response.body(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Successfully got data! "+response.body(), Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     linearLayout.setVisibility(View.VISIBLE);
-                    if(response.isSuccessful()) {
-                        try {
-                            JSONObject json = new JSONObject(response.body().string());
-                            JSONObject data = (JSONObject) json.get("data");
-                            String imageData = (String) data.get("imageBase64");
-                            String videoData = (String) data.get("videoBase64");
-                            String audidioData = (String) data.get("audioBase64");
-                            Double price = (Double) data.get("price");
+                    GetObjectionResponse objectionResponse = response.body();
+                    if(objectionResponse.getStatus().equals(ConsumerConstant.STATUS.OK.toString())) {
 
-                            imageView.setImageBitmap(EncodeDecodeUtil.decodeBase64ToImage(imageData, getApplicationContext()));
-                            videoView.setVideoURI(EncodeDecodeUtil.decodeBase64ToVideo(videoData,getApplicationContext()));
-                            videoView.start();
-                            textView.setText("Price = " + price);
+                        Objection objection = objectionResponse.getObjection();
 
-                            Uri audioUri = EncodeDecodeUtil.decodeBase64ToAudio(audidioData, getApplicationContext());// initialize Uri here
-                            audioMediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri);
+                        String imageData = objection.getImageBase64();
+                        String videoData = objection.getVideoBase64();
+                        String audidioData = objection.getAudioBase64();
+                        String objectionDetails = objection.getObjectionDetails();
+                        Toast.makeText(ObjectionActivity.this, objectionResponse.getMessage() + "   " + objectionDetails + " detials and status: " + objectionResponse.getStatus(), Toast.LENGTH_SHORT).show();
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        imageView.setImageBitmap(EncodeDecodeUtil.decodeBase64ToImage(imageData, getApplicationContext()));
+                        videoView.setVideoURI(EncodeDecodeUtil.decodeBase64ToVideo(videoData,getApplicationContext()));
+                        videoView.start();
+                        textView.setText("Price = " + objectionDetails + " Updated");
+
+//                        Uri audioUri = EncodeDecodeUtil.decodeBase64ToAudio(audidioData, getApplicationContext());// initialize Uri here
+//                        audioMediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri);
+                    }else{
+                        Toast.makeText(ObjectionActivity.this, objectionResponse.getMessage() + " Oho!", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -138,7 +139,7 @@ public class ObjectionActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<GetObjectionResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 linearLayout.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();

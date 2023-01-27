@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.motiur.consumer.Adapter.MyListAdapter;
+import com.motiur.consumer.Adapter.ObjectionListAdapter;
 import com.motiur.consumer.api.ConsumerObjectionClient;
 import com.motiur.consumer.model.GetAllObjectionResponse;
 import com.motiur.consumer.model.Objection;
@@ -75,7 +75,7 @@ public class AllObjectionsActivity extends AppCompatActivity {
                     } else {
                         String value = dataList.get(0).getImageBase64();
                         Log.d("", value);
-                        MyListAdapter adapter = new MyListAdapter(dataList, getApplicationContext());
+                        ObjectionListAdapter adapter = new ObjectionListAdapter(dataList, getApplicationContext());
                         recyclerView.setAdapter(adapter);
                     }
 

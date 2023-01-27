@@ -23,6 +23,16 @@ public class Objection {
     private Boolean isVerified;
     private Boolean isClosed;
 
+    public Objection(String imageBase64, String videoBase64, String audioBase64, String objectionDetails, String objectionType, String accusedOrganizationName, String accusedOrganizationAddress) {
+        this.imageBase64 = imageBase64;
+        this.videoBase64 = videoBase64;
+        this.audioBase64 = audioBase64;
+        this.objectionDetails = objectionDetails;
+        this.objectionType = objectionType;
+        this.accusedOrganizationName = accusedOrganizationName;
+        this.accusedOrganizationAddress = accusedOrganizationAddress;
+    }
+
     public Objection() {
 
     }

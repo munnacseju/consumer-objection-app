@@ -16,6 +16,11 @@ import com.motiur.consumer.api.ConsumerObjectionClient;
 import com.motiur.consumer.model.User;
 import com.motiur.consumer.security.AuthToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -104,7 +109,7 @@ public class LogInActivity extends AppCompatActivity {
                         finish();
                         startActivity(new Intent(LogInActivity.this, ProtectedActivity.class));
                     }else{
-                        Toast.makeText(LogInActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivity.this, "Unauthorized!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(LogInActivity.this, "Wrong Credentials! Try again!", Toast.LENGTH_LONG).show();

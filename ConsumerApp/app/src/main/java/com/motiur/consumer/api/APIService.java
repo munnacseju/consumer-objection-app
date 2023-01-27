@@ -1,6 +1,7 @@
 package com.motiur.consumer.api;
 
 import com.motiur.consumer.model.GetAllObjectionResponse;
+import com.motiur.consumer.model.GetObjectionResponse;
 import com.motiur.consumer.model.RegisterResponse;
 import com.motiur.consumer.model.User;
 import com.motiur.consumer.model.Objection;
@@ -34,7 +35,7 @@ public interface APIService {
     Call<GetAllObjectionResponse> getObjections();
 
     @GET("objections/{id}")
-    Call<ResponseBody> getObjection(@Path("id") Long id);
+    Call<GetObjectionResponse> getObjection(@Path("id") Long id);
 
     @DELETE("objections/{id}")
     Call<ResponseBody> deleteObjection(@Path("id") Long id);

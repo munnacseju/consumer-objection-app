@@ -30,12 +30,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder>{
+public class ObjectionListAdapter extends RecyclerView.Adapter<ObjectionListAdapter.ViewHolder>{
     private Objection[] listdata;
     Context context;
 
     // RecyclerView recyclerView;
-    public MyListAdapter(ArrayList<Objection> listdata, Context context) {
+    public ObjectionListAdapter(ArrayList<Objection> listdata, Context context) {
         this.listdata = listdata.toArray(new Objection[0]);
         this.context = context;
     }
@@ -50,7 +50,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final Objection objection = listdata[position];
-        holder.textView.setText( "Price: " + listdata[position].getObjectionDetails());
+        holder.textView.setText( "Details: " + listdata[position].getObjectionDetails());
         String image, videoBase64;
         image = listdata[position].getImageBase64();
         videoBase64 = listdata[position].getVideoBase64();

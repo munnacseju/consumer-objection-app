@@ -2,31 +2,22 @@ package com.motiur.consumer;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -52,29 +43,15 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
     static final int REQUEST_VIDEO_PICK = 2;
     static final int REQUEST_IMAGE_PICK = 1;
     static final int REQUET_AUDIO_PICK = 3;
-    private Chronometer chronometer;
-    private Button recorderBtn;
-    private Button captureBtn;
-    private Button submitBtn;
-    private boolean isRecording = false;
-    private String recordPermission = Manifest.permission.RECORD_AUDIO;
-    private int PERMISSION_CODE = 21;
-    private MediaRecorder mediaRecorder;
+    private Button selectAudioBtn, selectVideoBtn, selectImageBtn, submitBtn;
     private String imageBase64 = "";
     private String audioBase64 = "";
     private String videoBase64 = "";
-    private String price = "";
     private ImageView imageView;
-    private EditText etPrice;
+    private EditText etObjectionDetials, etComplainType, etAccusedOrganizationName, etAccusedOrganizationAddress, etSignature;
     private Dialog dialog;
     private ProgressBar progressBar;
-    private MediaPlayer mediaPlayer;
-
-    Button captureVideoBt;
     VideoView videoView;
-    int REQUEST_COD_VIDEO_CAPTURE = 2607;
-    private int EXTERNAL_STORAGE_PERMISSION_CODE = 23;
-    private int EXTERNAL_STORAGE_PERMISSION_CODE_WRITE = 23;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +59,16 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_create_objection);
 
         progressBar = findViewById(R.id.progressBarId);
-        recorderBtn = findViewById(R.id.recordBtn);
-        chronometer = findViewById(R.id.chronometerId);
-        captureBtn = findViewById(R.id.captureButtonId);
+        selectAudioBtn = findViewById(R.id.recordBtn);
+        selectImageBtn = findViewById(R.id.captureButtonId);
         imageView = findViewById(R.id.imageView);
         submitBtn = findViewById(R.id.submitBtn);
-        etPrice = findViewById(R.id.priceEditTextId);
+        etObjectionDetials = findViewById(R.id.objectionDetailsEditTextId);
+        selectVideoBtn =   findViewById(R.id.videoCaptureButtonId);
+        etComplainType = findViewById(R.id.complainTypeEtId);
+        etAccusedOrganizationName = findViewById(R.id.accusedOrganizationNameEtId);
+        etAccusedOrganizationAddress = findViewById(R.id.accusedOrganizationAddressEtId);
+        etSignature = findViewById(R.id.signatureEtId);
 
         videoView = findViewById(R.id.videoViewId);
 
@@ -100,14 +81,14 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        recorderBtn.setOnClickListener(new View.OnClickListener() {
+        selectAudioBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectAudioIntent();
             }
         });
 
-        captureBtn.setOnClickListener(new View.OnClickListener() {
+        selectImageBtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
@@ -118,14 +99,23 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isValidationOk = formValidation();
-                if(isValidationOk){
-                    objectionRequest();
+                boolean isValidatedForAttachedFile = checkValidation();
+                String complainType = etComplainType.getText().toString().trim();
+                String accusedOrganizationName = etAccusedOrganizationName.getText().toString().trim();
+                String accusedOrganizationAddress = etAccusedOrganizationAddress.getText().toString().trim();
+                String signature = etSignature.getText().toString().trim();
+                String objectionDetails = etObjectionDetials.getText().toString().trim();
+
+                Objection objection = new Objection(imageBase64, videoBase64, audioBase64, objectionDetails, complainType, accusedOrganizationName, accusedOrganizationAddress);
+
+                boolean isValidatedForm = checkValidationForm( complainType, accusedOrganizationName, accusedOrganizationAddress, signature, objectionDetails);
+                if(isValidatedForAttachedFile && isValidatedForm){
+                    objectionRequest(objection);
                 }
             }
         });
 
-        findViewById(R.id.videoCaptureButtonId).setOnClickListener(new View.OnClickListener() {
+        selectVideoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectVideoIntent();
@@ -133,20 +123,35 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         });
     }
 
-    private boolean formValidation() {
-        price = etPrice.getText().toString().trim();
-        if(imageBase64==""){
+    private boolean checkValidationForm(String complainType, String accusedOrganizationName, String accusedOrganizationAddress, String signature, String objectionDetails) {
+        if(complainType.isEmpty()){
+            etComplainType.setError("Enter Complain type");
+            etComplainType.requestFocus();
+            return false;
+        }else if(accusedOrganizationName.isEmpty()){
+            etAccusedOrganizationName.setError("Enter Accuesed Organization name!");
+            etAccusedOrganizationName.requestFocus();
+            return false;
+        }else if(accusedOrganizationAddress.isEmpty()){
+            etAccusedOrganizationAddress.setError("Enter Accuesed Organization address!");
+            etAccusedOrganizationAddress.requestFocus();
+            return false;
+        }else if(signature.isEmpty()){
+            etSignature.setError("Enter signature!");
+            etSignature.requestFocus();
+            return false;
+        } else if(objectionDetails.isEmpty()){
+            etObjectionDetials.setError("Enter objection detiails");
+            etObjectionDetials.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkValidation() {
+        if(imageBase64=="" && audioBase64 =="" && videoBase64 == ""){
             imageView.requestFocus();
-            Toast.makeText(getApplicationContext(), "Capture an Image First", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(audioBase64==""){
-            recorderBtn.requestFocus();
-            Toast.makeText(getApplicationContext(), "Record an Audio First", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(price.isEmpty()){
-            etPrice.setError("Enter Price");
-            etPrice.requestFocus();
-            Toast.makeText(getApplicationContext(), "Enter Objection Details", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Select a image or video or audio first", Toast.LENGTH_SHORT).show();
             return false;
         }else {
             return true;
@@ -172,6 +177,7 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         else if(requestCode== REQUEST_VIDEO_PICK && resultCode == RESULT_OK){
             Uri videoUri = data.getData();
             videoBase64 = EncodeDecodeUtil.encodeVideoToBase64(videoUri, this);
+            Toast.makeText(this, "Video base 64" + videoBase64, Toast.LENGTH_SHORT).show();
             Uri uri = EncodeDecodeUtil.decodeBase64ToVideo(videoBase64, this);
             videoView.setVideoURI(uri);
             videoView.start();
@@ -182,8 +188,6 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
             File recordFile = new File(String.valueOf(audioUri));
             String path = recordFile.getAbsolutePath();
             audioBase64 = EncodeDecodeUtil.encodeAudioToBase64(path, this);
-
-
         }
     }
 
@@ -218,16 +222,6 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
             startActivityForResult(Intent.createChooser(intent, "Select audio"), REQUEST_VIDEO_PICK);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(CreateObjectionActivity.this, "audio loading failed", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private boolean checkPermissions() {
-        if(ActivityCompat.checkSelfPermission(getApplicationContext(), recordPermission)== PackageManager.PERMISSION_GRANTED){
-            return true;
-        }else {
-            ActivityCompat.requestPermissions(this, new String[]{recordPermission}, PERMISSION_CODE);
-            Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_SHORT).show();
-            return false;
         }
     }
 
@@ -273,13 +267,13 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
     }
 
     //    Server Request
-    private void objectionRequest() {
+    private void objectionRequest(Objection objection) {
 
         progressBar.setVisibility(View.VISIBLE);
         Call<ResponseBody> call = ConsumerObjectionClient
                 .getInstance()
                 .getAPI()
-                .sendObjection(new Objection(imageBase64, audioBase64, videoBase64, price));
+                .sendObjection(objection);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -287,7 +281,7 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
 //                Log.d("hello", call.request().toString());
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.code() == 200) {
-                    Toast.makeText(CreateObjectionActivity.this, "Successfully objectioned data!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateObjectionActivity.this, "Successfully objection compleated!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(CreateObjectionActivity.this, "Some unknown problem occurred!! "+response.code(), Toast.LENGTH_LONG).show();
                 }

@@ -64,10 +64,11 @@ public class ApiJWTAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
                 HashMap<String, Object> responseBody = new HashMap<>();
                 responseBody.put("authentication", token);
-                responseBody.put("result", ConsumerConstant.STATUS.OK);
+                responseBody.put("status", ConsumerConstant.STATUS.OK);
                 String json = new ObjectMapper().writeValueAsString(responseBody);
 
-                res.getWriter().write(json);            }
+                res.getWriter().write(json); 
+            }
         }
     }
 

@@ -41,5 +41,6 @@
     <string name="district">District</string>
     <string name="division">Division</string>
     <string name="signature">signature</string>
+    <string name="objection_details">Objection Details</string>
 </resources>
 

@@ -60,9 +60,9 @@ public class ObjectionController {
             if (objection.isPresent() && objection.get().getUser().equals(user)) {
                 response.put("status", ConsumerConstant.STATUS.OK);
                 response.put("message", "Successfully got the objection!");
-                response.put("data", objection.get());
+                response.put("objection", objection.get());
             } else {
-                response.put("status", ConsumerConstant.STATUS.OK);
+                response.put("status", ConsumerConstant.STATUS.NOT_OK);
                 response.put("message", "No such objection found!");
             }
         } else {
