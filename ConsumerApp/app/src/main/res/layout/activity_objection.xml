@@ -36,19 +36,42 @@
                 <ImageView
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:src="@drawable/info_background"
                     android:id="@+id/objectionImageViewId"
                     ></ImageView>
 
                 <TextView
-                    android:layout_margin="10dp"
-                    android:layout_gravity="center"
-                    android:id="@+id/objectionTextViewId"
+                    android:id="@+id/objectionTypeTvId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
-                    />
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="Objection Type" />
+
+                <TextView
+                    android:id="@+id/accusedOrganizationNameTvId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="accusedOrganizationName" />
+
+                <TextView
+                    android:id="@+id/accusedOrganizationAddressTvId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="accusedOrganizationAddress" />
+
+                <TextView
+                    android:id="@+id/objectionDetailsTextViewId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="TextView" />
 
                 <ImageView
                     android:layout_margin="10dp"

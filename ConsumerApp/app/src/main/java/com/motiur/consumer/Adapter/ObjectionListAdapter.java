@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -50,15 +51,17 @@ public class ObjectionListAdapter extends RecyclerView.Adapter<ObjectionListAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final Objection objection = listdata[position];
-        holder.textView.setText( "Details: " + listdata[position].getObjectionDetails());
-        String image, videoBase64;
-        image = listdata[position].getImageBase64();
-        videoBase64 = listdata[position].getVideoBase64();
+        holder.textView.setText( "Details: " + objection.getObjectionDetails());
+        if(objection.getImageBase64().equals("") || objection.getImageBase64() == null){
+            holder.imageView.setVisibility(View.GONE);
+        }else{
+            Bitmap decodedImage = EncodeDecodeUtil.decodeBase64ToImage(objection.getImageBase64(), context);
+            holder.imageView.setImageBitmap(decodedImage);
+        }
 
-        byte[] imageBytes;
-        imageBytes = Base64.decode(image, Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        holder.imageView.setImageBitmap(decodedImage);
+        if(objection.getAudioBase64().equals("") || objection.getAudioBase64() == null){
+            holder.imageRecordBtn.setVisibility(View.GONE);
+        }
 
         holder.imageRecordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,12 +79,16 @@ public class ObjectionListAdapter extends RecyclerView.Adapter<ObjectionListAdap
                 Toast.makeText(view.getContext(),"click on item: "+objection.getObjectionDetails(),Toast.LENGTH_LONG).show();
             }
         });
-//        MediaController mediaController = new MediaController(context);
-//        mediaController.setAnchorView(holder.videoView);
-//        holder.videoView.setMediaController(mediaController);
-        Uri uri = EncodeDecodeUtil.decodeBase64ToVideo(videoBase64, context);
-        holder.videoView.setVideoURI(uri);
-//        holder.videoView.start();
+        if(objection.getVideoBase64().equals("") || objection.getVideoBase64() == null){
+            holder.videoView.setVisibility(View.GONE);
+        }else{
+            MediaController mediaController = new MediaController(context);
+            mediaController.setAnchorView(holder.videoView);
+            holder.videoView.setMediaController(mediaController);
+            Uri uri = EncodeDecodeUtil.decodeBase64ToVideo(objection.getVideoBase64(), context);
+            holder.videoView.setVideoURI(uri);
+            holder.videoView.start();
+        }
     }
 
 

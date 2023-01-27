@@ -37,7 +37,7 @@ import retrofit2.Response;
 public class ObjectionActivity extends AppCompatActivity {
     ImageView imageView, audioView;
     VideoView videoView;
-    TextView textView;
+    TextView objectionDetailsTextView, objectionTypeTv, accusedOrganizationNameTv, accusedOrganizationAddressTv;
     Button deleteObjectionButton;
     ProgressBar progressBar;
     LinearLayout linearLayout;
@@ -55,7 +55,10 @@ public class ObjectionActivity extends AppCompatActivity {
         imageView = findViewById(R.id.objectionImageViewId);
         audioView = findViewById(R.id.objectionAudioId);
         videoView = findViewById(R.id.objectionVideoViewId);
-        textView = findViewById(R.id.objectionTextViewId);
+        objectionDetailsTextView = findViewById(R.id.objectionDetailsTextViewId);
+        objectionTypeTv = findViewById(R.id.objectionTypeTvId);
+        accusedOrganizationNameTv = findViewById(R.id.accusedOrganizationNameTvId);
+        accusedOrganizationAddressTv = findViewById(R.id.accusedOrganizationAddressTvId);
         progressBar = findViewById(R.id.progressBarId);
         linearLayout = findViewById(R.id.linearLayoutId);
 
@@ -114,19 +117,36 @@ public class ObjectionActivity extends AppCompatActivity {
 
                         Objection objection = objectionResponse.getObjection();
 
+                        objectionTypeTv.setText(objection.getObjectionType());
+                        accusedOrganizationNameTv.setText(objection.getAccusedOrganizationName());
+                        accusedOrganizationAddressTv.setText(objection.getAccusedOrganizationAddress());
+
                         String imageData = objection.getImageBase64();
                         String videoData = objection.getVideoBase64();
                         String audidioData = objection.getAudioBase64();
                         String objectionDetails = objection.getObjectionDetails();
                         Toast.makeText(ObjectionActivity.this, objectionResponse.getMessage() + "   " + objectionDetails + " detials and status: " + objectionResponse.getStatus(), Toast.LENGTH_SHORT).show();
+                        if(objection.getVideoBase64().equals("") || objection.getVideoBase64() == null){
+                            videoView.setVisibility(View.GONE);
+                        }else{
+                            videoView.setVideoURI(EncodeDecodeUtil.decodeBase64ToVideo(videoData,getApplicationContext()));
+                            videoView.start();
+                        }
+                        if(objection.getImageBase64().equals("") || objection.getImageBase64() == null){
+                            imageView.setVisibility(View.GONE);
+                        }else{
+                            imageView.setImageBitmap(EncodeDecodeUtil.decodeBase64ToImage(imageData, getApplicationContext()));
+                        }
 
-                        imageView.setImageBitmap(EncodeDecodeUtil.decodeBase64ToImage(imageData, getApplicationContext()));
-                        videoView.setVideoURI(EncodeDecodeUtil.decodeBase64ToVideo(videoData,getApplicationContext()));
-                        videoView.start();
-                        textView.setText("Price = " + objectionDetails + " Updated");
+                        if(objection.getAudioBase64().equals("") || objection.getAudioBase64() == null){
+                            audioView.setVisibility(View.GONE);
+                        }else{
+                            audioView.setVisibility(View.VISIBLE);
+                            Uri audioUri = EncodeDecodeUtil.decodeBase64ToAudio(audidioData, getApplicationContext());// initialize Uri here
+                            audioMediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri);
+                        }
+                        objectionDetailsTextView.setText(objectionDetails);
 
-//                        Uri audioUri = EncodeDecodeUtil.decodeBase64ToAudio(audidioData, getApplicationContext());// initialize Uri here
-//                        audioMediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri);
                     }else{
                         Toast.makeText(ObjectionActivity.this, objectionResponse.getMessage() + " Oho!", Toast.LENGTH_SHORT).show();
                     }

@@ -181,13 +181,11 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
             Uri uri = EncodeDecodeUtil.decodeBase64ToVideo(videoBase64, this);
             videoView.setVideoURI(uri);
             videoView.start();
+        }else if (requestCode == REQUET_AUDIO_PICK && resultCode == RESULT_OK && data != null) {
+            Uri videoUri = data.getData();
+            audioBase64 = EncodeDecodeUtil.encodeVideoToBase64(videoUri, this);
         }else{
             Toast.makeText(this, "Someting issue", Toast.LENGTH_SHORT).show();
-        }if (requestCode == REQUET_AUDIO_PICK && resultCode == RESULT_OK && data != null) {
-            Uri audioUri = data.getData();
-            File recordFile = new File(String.valueOf(audioUri));
-            String path = recordFile.getAbsolutePath();
-            audioBase64 = EncodeDecodeUtil.encodeAudioToBase64(path, this);
         }
     }
 
@@ -219,7 +217,7 @@ public class CreateObjectionActivity extends AppCompatActivity implements View.O
         intent.setAction(Intent.ACTION_GET_CONTENT);
 
         try {
-            startActivityForResult(Intent.createChooser(intent, "Select audio"), REQUEST_VIDEO_PICK);
+            startActivityForResult(Intent.createChooser(intent, "Select audio"), REQUET_AUDIO_PICK);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(CreateObjectionActivity.this, "audio loading failed", Toast.LENGTH_SHORT).show();
         }
